@@ -1,0 +1,993 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inview - Intelligent Interview Panel</title>
+    <!-- Importing Google Fonts for Typography -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        /* --- CSS Variables for Easy Theming --- */
+        :root {
+            --primary-color: #0F172A; /* Slate 900 */
+            --accent-color: #2563EB; /* Royal Blue */
+            --accent-hover: #1D4ED8;
+            --secondary-color: #64748B; /* Slate 500 */
+            --bg-light: #F8FAFC;
+            --white: #ffffff;
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.1);
+            --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05);
+            --radius: 12px;
+            --transition: all 0.3s ease;
+        }
+
+        /* --- Global Reset & Typography --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-light);
+            color: var(--primary-color);
+            line-height: 1.6;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        /* --- Utility Classes --- */
+        .container {
+            max-w-1280px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* --- UPDATED BUTTON STYLES --- */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 12px 32px; /* Wider padding for pill shape */
+            border-radius: 50px; /* Pill shape */
+            font-weight: 600;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            text-align: center;
+            letter-spacing: 0.01em;
+            text-transform: capitalize;
+            border: none; /* Reset default border */
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--accent-color) 0%, #4338CA 100%); /* Gradient Blue-Indigo */
+            color: var(--white);
+            border: 1px solid transparent;
+            box-shadow: 0 4px 6px -1px rgba(37, 99, 235, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(37, 99, 235, 0.4);
+            filter: brightness(1.1);
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            color: var(--primary-color);
+            border: 2px solid #E2E8F0; /* Slightly thicker border */
+        }
+
+        .btn-outline:hover {
+            border-color: var(--accent-color);
+            color: var(--accent-color);
+            background-color: #EFF6FF;
+        }
+
+        .section-title {
+            font-size: 2.25rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            text-align: center;
+            color: var(--primary-color);
+        }
+
+        .section-subtitle {
+            text-align: center;
+            color: var(--secondary-color);
+            max-width: 600px;
+            margin: 0 auto 3rem auto;
+            font-size: 1.1rem;
+        }
+
+        /* --- Header / Navigation --- */
+        header {
+            background-color: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            border-bottom: 1px solid #E2E8F0;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 80px;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-container img {
+            height: 40px; /* Adjusted for the new logo aspect ratio */
+            width: auto;
+        }
+
+        .company-name {
+            font-weight: 700;
+            font-size: 1.25rem;
+            letter-spacing: -0.02em;
+            color: var(--primary-color);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 32px;
+            align-items: center;
+        }
+
+        .nav-links a:not(.btn) {
+            font-weight: 500;
+            color: var(--secondary-color);
+            font-size: 0.95rem;
+            transition: var(--transition);
+        }
+
+        .nav-links a:not(.btn):hover {
+            color: var(--accent-color);
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            font-size: 1.5rem;
+            color: var(--primary-color);
+            cursor: pointer;
+        }
+
+        /* --- Hero Section --- */
+        .hero {
+            padding-top: 160px;
+            padding-bottom: 100px;
+            position: relative;
+            background: radial-gradient(circle at top right, #DBEAFE 0%, transparent 40%),
+                        radial-gradient(circle at bottom left, #E0E7FF 0%, transparent 40%);
+        }
+
+        .hero-content {
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .dev-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background-color: #FEF3C7;
+            color: #92400E;
+            padding: 6px 16px;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 24px;
+            border: 1px solid #FDE68A;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            line-height: 1.1;
+            font-weight: 800;
+            letter-spacing: -0.03em;
+            margin-bottom: 24px;
+            background: -webkit-linear-gradient(45deg, var(--primary-color), var(--accent-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero p {
+            font-size: 1.25rem;
+            color: var(--secondary-color);
+            margin-bottom: 40px;
+        }
+
+        .hero-btns {
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+        }
+
+        /* --- Login Portals Section --- */
+        .portals {
+            padding: 80px 0;
+            background-color: var(--white);
+        }
+
+        .portal-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 32px;
+            margin-top: 20px;
+        }
+
+        .portal-card {
+            background: var(--white);
+            border: 1px solid #E2E8F0;
+            border-radius: 16px;
+            padding: 32px;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .portal-card:hover {
+            border-color: var(--accent-color);
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .portal-icon-box {
+            width: 64px;
+            height: 64px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            margin-bottom: 20px;
+        }
+
+        .icon-admin { background-color: #FEF2F2; color: #EF4444; }
+        .icon-mod { background-color: #F0F9FF; color: #0EA5E9; }
+        .icon-inter { background-color: #F0FDF4; color: #22C55E; }
+
+        .portal-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 12px;
+        }
+
+        .portal-card p {
+            color: var(--secondary-color);
+            font-size: 0.95rem;
+            margin-bottom: 24px;
+            flex-grow: 1;
+        }
+
+        /* --- Workflow / Timeline Section --- */
+        .workflow {
+            padding: 100px 0;
+            background-color: #F1F5F9;
+        }
+
+        .timeline {
+            position: relative;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 40px 0;
+        }
+
+        .timeline::after {
+            content: '';
+            position: absolute;
+            width: 4px;
+            background-color: #CBD5E1;
+            top: 0;
+            bottom: 0;
+            left: 50%;
+            margin-left: -2px;
+            border-radius: 2px;
+        }
+
+        .timeline-item {
+            padding: 10px 40px;
+            position: relative;
+            background-color: inherit;
+            width: 50%;
+        }
+
+        .timeline-item::after {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            right: -10px;
+            background-color: var(--white);
+            border: 4px solid var(--accent-color);
+            top: 25px;
+            border-radius: 50%;
+            z-index: 1;
+        }
+
+        .left {
+            left: 0;
+        }
+
+        .right {
+            left: 50%;
+        }
+
+        .right::after {
+            left: -10px;
+        }
+
+        .timeline-content {
+            padding: 24px;
+            background-color: var(--white);
+            border-radius: 12px;
+            box-shadow: var(--shadow-md);
+            border: 1px solid #E2E8F0;
+        }
+
+        .timeline-content h4 {
+            font-size: 1.2rem;
+            margin-bottom: 8px;
+            color: var(--primary-color);
+        }
+
+        .timeline-content span {
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: var(--accent-color);
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        /* --- Features Section --- */
+        .features {
+            padding: 100px 0;
+            background-color: var(--white);
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+        }
+
+        .feature-item {
+            display: flex;
+            gap: 20px;
+            align-items: flex-start;
+            padding: 20px;
+            border-radius: 12px;
+            transition: var(--transition);
+        }
+        
+        .feature-item:hover {
+            background-color: #F8FAFC;
+        }
+
+        .feature-icon {
+            min-width: 50px;
+            height: 50px;
+            background-color: #EFF6FF;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--accent-color);
+            font-size: 1.25rem;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .feature-text h4 {
+            font-size: 1.15rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .feature-text p {
+            font-size: 0.95rem;
+            color: var(--secondary-color);
+        }
+        
+        /* --- About Section --- */
+        .about-section {
+            padding: 100px 0;
+            background-color: var(--bg-light);
+            border-top: 1px solid #E2E8F0;
+        }
+        
+        .about-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        
+        .about-text {
+            font-size: 1.1rem;
+            color: var(--secondary-color);
+            margin-bottom: 2rem;
+        }
+
+        /* --- Footer --- */
+        footer {
+            background-color: var(--primary-color);
+            color: #94A3B8;
+            padding: 60px 0 20px 0;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr;
+            gap: 40px;
+            margin-bottom: 60px;
+        }
+
+        .footer-brand h4 {
+            color: var(--white);
+            font-size: 1.25rem;
+            margin-bottom: 16px;
+        }
+
+        .footer-col h5 {
+            color: var(--white);
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        .footer-col ul li {
+            margin-bottom: 12px;
+        }
+
+        .footer-col ul li a:hover {
+            color: var(--white);
+        }
+
+        .copyright {
+            border-top: 1px solid #1E293B;
+            padding-top: 20px;
+            text-align: center;
+            font-size: 0.85rem;
+        }
+
+        /* --- Modals (Shared Styles) --- */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            backdrop-filter: blur(5px);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+            opacity: 1;
+        }
+
+        .modal-container {
+            background: var(--white);
+            padding: 40px;
+            border-radius: 16px;
+            width: 100%;
+            max-width: 450px;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+            transform: scale(0.9);
+            transition: transform 0.3s ease;
+            position: relative;
+        }
+
+        .modal-overlay.active .modal-container {
+            transform: scale(1);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+
+        .modal-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .close-modal {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--secondary-color);
+            transition: color 0.3s;
+        }
+
+        .close-modal:hover {
+            color: var(--primary-color);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .form-input, .form-textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #E2E8F0;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: var(--transition);
+            font-family: inherit;
+        }
+
+        .form-textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .form-input:focus, .form-textarea:focus {
+            outline: none;
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+        
+        /* Under Development Modal Specifics */
+        .dev-modal-content {
+            text-align: center;
+            padding: 20px 0;
+        }
+        
+        .dev-icon {
+            font-size: 3rem;
+            color: #F59E0B; /* Amber 500 */
+            margin-bottom: 20px;
+        }
+
+        /* --- Responsive Design --- */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+                flex-direction: column;
+                position: absolute;
+                top: 80px;
+                left: 0;
+                width: 100%;
+                background: var(--white);
+                padding: 20px;
+                box-shadow: var(--shadow-md);
+                align-items: stretch;
+            }
+
+            .nav-links.active {
+                display: flex;
+            }
+            
+            .nav-links a {
+                text-align: center;
+                padding: 10px 0;
+            }
+
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .footer-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            /* Timeline Responsive */
+            .timeline::after {
+                left: 31px;
+            }
+            
+            .timeline-item {
+                width: 100%;
+                padding-left: 70px;
+                padding-right: 25px;
+            }
+            
+            .timeline-item::after {
+                left: 21px;
+            }
+            
+            .left::after, .right::after {
+                left: 21px;
+            }
+            
+            .right {
+                left: 0%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <nav>
+                <div class="logo-container">
+                    <!-- UPDATED LOGO -->
+                    <img src="https://res.cloudinary.com/dpz44zf0z/image/upload/v1766073096/INVIEW_ct336y.png" alt="Inview Logo">
+                    <span class="company-name"></span>
+                </div>
+                
+                <div class="nav-links" id="navLinks">
+                    <a href="#home">Home</a>
+                    <a href="#workflow">How It Works</a>
+                    <a href="#portals">Portals</a>
+                    <a href="#features">Features</a>
+                    <a href="#about">About</a>
+                    <!-- UPDATED CONTACT BUTTON -->
+                    <button onclick="openContact()" class="btn btn-primary" style="padding: 10px 24px;">Contact Sales</button>
+                </div>
+
+                <div class="mobile-menu-btn" onclick="toggleMenu()">
+                    <i class="fas fa-bars"></i>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="container hero-content">
+            <div class="dev-badge">
+                <i class="fas fa-hammer"></i> Currently Under Development
+            </div>
+            <h1>Smart Technical<br>Recruitment Platform</h1>
+            <p>Streamline your hiring process with our automated interview panel. Connect Admins, Moderators, and Interviewers in one seamless ecosystem with random allocation and real-time grading.</p>
+            
+            <div class="hero-btns">
+                <a href="#portals" class="btn btn-primary">Login Now</a>
+                <a href="#workflow" class="btn btn-outline">See How It Works</a>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Workflow / Timeline Section -->
+    <section class="workflow" id="workflow">
+        <div class="container">
+            <h2 class="section-title">Workflow Lifecycle</h2>
+            <p class="section-subtitle">From admin configuration to final student evaluation, see how the data flows.</p>
+            
+            <div class="timeline">
+                <div class="timeline-item left">
+                    <div class="timeline-content">
+                        <span>Phase 1: Admin</span>
+                        <h4>System Setup</h4>
+                        <p>The Admin initializes the ecosystem by issuing secure login credentials to Moderators (Company profiles) and managing their access rights.</p>
+                    </div>
+                </div>
+                <div class="timeline-item right">
+                    <div class="timeline-content">
+                        <span>Phase 2: Moderator</span>
+                        <h4>Scheduling & Config</h4>
+                        <p>Moderators add interviewers, upload Coding/SQL problems, define custom grading metrics, and upload student lists. The system then <strong>randomly allocates</strong> students to interviewers to ensure bias-free panels.</p>
+                    </div>
+                </div>
+                <div class="timeline-item left">
+                    <div class="timeline-content">
+                        <span>Phase 3: Interviewer</span>
+                        <h4>Live Assessment</h4>
+                        <p>Interviewers login to see their assigned students. They use the <strong>Online Compiler</strong> to test code logic against hidden test cases and SQL queries in real-time.</p>
+                    </div>
+                </div>
+                <div class="timeline-item right">
+                    <div class="timeline-content">
+                        <span>Phase 4: Reporting</span>
+                        <h4>Grading & Insights</h4>
+                        <p>Interviewers submit final scores, triggering automated "Thank You" emails to students. Moderators can then download comprehensive <strong>Bulk Excel Reports</strong> of all candidates.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Portals Section -->
+    <section class="portals" id="portals">
+        <div class="container">
+            <h2 class="section-title">Select Your Role</h2>
+            <p class="section-subtitle">Secure, dedicated portals for every stakeholder in the recruitment process.</p>
+            
+            <div class="portal-grid">
+                <!-- Admin Card -->
+                <div class="portal-card">
+                    <div class="portal-icon-box icon-admin">
+                        <i class="fas fa-user-shield"></i>
+                    </div>
+                    <h3>Admin Portal</h3>
+                    <p>Central control for issuing Moderator logins, managing company profiles, and overseeing system integrity. Admins can hold, edit, or delete moderator access.</p>
+                    <button class="btn btn-outline" onclick="openLogin('Admin')">Login as Admin</button>
+                </div>
+
+                <!-- Moderator Card -->
+                <div class="portal-card">
+                    <div class="portal-icon-box icon-mod">
+                        <i class="fas fa-building"></i>
+                    </div>
+                    <h3>Moderator Portal</h3>
+                    <p>The Company Hub: Add interviewers, set custom grading metrics, schedule interviews, and generate bulk performance reports in Excel format.</p>
+                    <button class="btn btn-outline" onclick="openLogin('Moderator')">Login as Moderator</button>
+                </div>
+
+                <!-- Interviewer Card -->
+                <div class="portal-card">
+                    <div class="portal-icon-box icon-inter">
+                        <i class="fas fa-code"></i>
+                    </div>
+                    <h3>Interviewer Portal</h3>
+                    <p>Access assigned students, utilize the Integrated Compiler for Code & SQL, view test cases, and submit final grades to the central database.</p>
+                    <button class="btn btn-outline" onclick="openLogin('Interviewer')">Login as Interviewer</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features" id="features">
+        <div class="container">
+            <h2 class="section-title">Platform Capabilities</h2>
+            <p class="section-subtitle">A robust suite of tools designed for high-volume technical hiring.</p>
+
+            <div class="features-grid">
+                <!-- Feature 1 -->
+                <div class="feature-item">
+                    <div class="feature-icon"><i class="fas fa-terminal"></i></div>
+                    <div class="feature-text">
+                        <h4>Code & SQL Compiler</h4>
+                        <p>Built-in environment supporting both algorithmic coding problems and SQL queries with execution support.</p>
+                    </div>
+                </div>
+
+                <!-- Feature 2 -->
+                <div class="feature-item">
+                    <div class="feature-icon"><i class="fas fa-random"></i></div>
+                    <div class="feature-text">
+                        <h4>Random Allocation</h4>
+                        <p>Eliminate bias by automatically and randomly assigning students from the uploaded list to available interviewers.</p>
+                    </div>
+                </div>
+
+                <!-- Feature 3 -->
+                <div class="feature-item">
+                    <div class="feature-icon"><i class="fas fa-envelope-open-text"></i></div>
+                    <div class="feature-text">
+                        <h4>Automated Emails</h4>
+                        <p>System-triggered emails notify interviewers of schedules and send "Thank You" notes to students upon completion.</p>
+                    </div>
+                </div>
+
+                <!-- Feature 4 -->
+                <div class="feature-item">
+                    <div class="feature-icon"><i class="fas fa-file-excel"></i></div>
+                    <div class="feature-text">
+                        <h4>Bulk Excel Export</h4>
+                        <p>Download comprehensive reports for hundreds of candidates in a single click for offline analysis.</p>
+                    </div>
+                </div>
+
+                <!-- Feature 5 -->
+                <div class="feature-item">
+                    <div class="feature-icon"><i class="fas fa-sliders-h"></i></div>
+                    <div class="feature-text">
+                        <h4>Custom Metrics</h4>
+                        <p>Moderators can define specific grading parameters (e.g., Logic, Syntax, Communication) for standardized scoring.</p>
+                    </div>
+                </div>
+                
+                <!-- Feature 6 -->
+                <div class="feature-item">
+                    <div class="feature-icon"><i class="fas fa-check-double"></i></div>
+                    <div class="feature-text">
+                        <h4>Test Case Validation</h4>
+                        <p>Pre-configured test cases allow interviewers to validate student code accuracy instantly during the live round.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- About Section -->
+    <section class="about-section" id="about">
+        <div class="container">
+            <h2 class="section-title">About The Software</h2>
+            <div class="about-content">
+                <p class="about-text">
+                    This software is currently being developed by <strong>Xeta Solutions</strong> to bridge the gap between academic institutions and corporate hiring needs. By digitizing the traditional pen-and-paper interview process, we provide a transparent, efficient, and data-driven approach to technical recruitment.
+                </p>
+                <div class="hero-btns">
+                    <button class="btn btn-outline" style="border-color: #CBD5E1;">Version 0.1 Alpha</button>
+                    <button class="btn btn-outline" style="border-color: #CBD5E1;">Secure Encryption</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                  <h3>Inview</h4>
+                    <h4>By Xeta Solutions</h4>
+                    <p>Empowering companies with next-generation software solutions. We build the tools that build the future.</p>
+                </div>
+                <div class="footer-col">
+                    <h5>Quick Links</h5>
+                    <ul>
+                        <li><a href="#home">Home</a></li>
+                        <li><a href="#workflow">How It Works</a></li>
+                        <li><a href="#features">Features</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h5>Legal</h5>
+                    <ul>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                        <li><a href="#">Support</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2024 Xeta Solutions. All rights reserved. | Software Version: Alpha 0.1</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- UPDATED: Login Modal (Under Development Notice) -->
+    <div class="modal-overlay" id="loginModal">
+        <div class="modal-container">
+            <div class="modal-header">
+                <h3 class="modal-title" id="modalTitle">Login</h3>
+                <button class="close-modal" onclick="closeLogin()">&times;</button>
+            </div>
+            
+            <div class="dev-modal-content">
+                <div class="dev-icon">
+                    <i class="fas fa-hard-hat"></i>
+                </div>
+                <h4 style="font-size: 1.25rem; margin-bottom: 12px; color: var(--primary-color);">Under Development</h4>
+                <p style="color: var(--secondary-color); margin-bottom: 24px;">
+                    We are working hard to get this platform ready for you. We will release the full login functionality very soon.
+                </p>
+                <button onclick="closeLogin()" class="btn btn-primary" style="width: 100%;">Okay, Got it!</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- NEW: Contact Sales Modal -->
+    <div class="modal-overlay" id="contactModal">
+        <div class="modal-container">
+            <div class="modal-header">
+                <h3 class="modal-title">Contact Sales</h3>
+                <button class="close-modal" onclick="closeContact()">&times;</button>
+            </div>
+            <form action="https://formspree.io/f/xyzbelvz" method="POST">
+                <div class="form-group">
+                    <label class="form-label" for="contact-email">Email Address</label>
+                    <input type="email" id="contact-email" name="email" class="form-input" placeholder="name@company.com" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="contact-message">Message</label>
+                    <textarea id="contact-message" name="message" class="form-textarea" placeholder="Tell us about your hiring needs..." required></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary" style="width: 100%;">Send Inquiry</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Toggle Mobile Menu
+        function toggleMenu() {
+            const nav = document.getElementById('navLinks');
+            nav.classList.toggle('active');
+        }
+
+        // --- Login Modal Logic (Under Development) ---
+        const loginModal = document.getElementById('loginModal');
+        const modalTitle = document.getElementById('modalTitle');
+
+        function openLogin(role) {
+            // Simply update the title and show the "Under Dev" message
+            if (role) {
+                modalTitle.innerText = `${role} Login`;
+            } else {
+                modalTitle.innerText = "Login";
+            }
+            loginModal.classList.add('active');
+        }
+
+        function closeLogin() {
+            loginModal.classList.remove('active');
+        }
+
+        // --- Contact Modal Logic ---
+        const contactModal = document.getElementById('contactModal');
+
+        function openContact() {
+            // Close login modal if it's open (just in case)
+            closeLogin();
+            // Close mobile menu if open
+            document.getElementById('navLinks').classList.remove('active');
+            
+            contactModal.classList.add('active');
+        }
+
+        function closeContact() {
+            contactModal.classList.remove('active');
+        }
+
+        // Close modals if clicking outside content
+        window.addEventListener('click', (e) => {
+            if (e.target === loginModal) {
+                closeLogin();
+            }
+            if (e.target === contactModal) {
+                closeContact();
+            }
+        });
+
+        // Smooth Scroll for Anchor Links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+                // Close mobile menu if open
+                document.getElementById('navLinks').classList.remove('active');
+            });
+        });
+    </script>
+</body>
+</html>
