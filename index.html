@@ -3,16 +3,38 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Inview - Intelligent Interview Panel</title>
-    <!-- Importing Google Fonts for Typography -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <!-- Font Awesome for Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-     <link rel="icon" type="image/png" sizes="32x32" href="https://res.cloudinary.com/dpz44zf0z/image/upload/v1766073096/INVIEW_ct336y.png">
+    
+    <!-- SEO Optimization -->
+    <title>Inview - Intelligent Interview Panel | Xeta Solutions</title>
+    <meta name="description" content="Streamline your technical hiring with Inview by Xeta Solutions. An automated interview panel featuring random allocation, online code compilers, and bias-free grading for seamless recruitment.">
+    <meta name="keywords" content="Interview Panel, Technical Recruitment, Coding Interview Platform, Online Compiler, Xeta Solutions, Automated Hiring, Recruitment Software">
+    <meta name="author" content="Xeta Solutions">
+    <meta name="robots" content="index, follow">
+    
+    <link rel="icon" type="image/png" sizes="32x32" href="https://res.cloudinary.com/dpz44zf0z/image/upload/v1766073096/INVIEW_ct336y.png">
     <link rel="icon" type="image/png" sizes="16x16" href="https://res.cloudinary.com/dpz44zf0z/image/upload/v1766073096/INVIEW_ct336y.png">
     <link rel="apple-touch-icon" sizes="180x180" href="https://res.cloudinary.com/dpz44zf0z/image/upload/v1766073096/INVIEW_ct336y.png">
     <link rel="shortcut icon" href="https://res.cloudinary.com/dpz44zf0z/image/upload/v1766073096/INVIEW_ct336y.png">
     
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://xetasolutions.com/">
+    <meta property="og:title" content="Inview - Intelligent Interview Panel">
+    <meta property="og:description" content="Streamline your technical hiring with Inview. Automated allocation, real-time coding environment, and comprehensive reporting.">
+    <meta property="og:image" content="https://res.cloudinary.com/dpz44zf0z/image/upload/v1766073096/INVIEW_ct336y.png">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://xetasolutions.com/">
+    <meta property="twitter:title" content="Inview - Intelligent Interview Panel">
+    <meta property="twitter:description" content="Streamline your technical hiring with Inview. Automated allocation, real-time coding environment, and comprehensive reporting.">
+    <meta property="twitter:image" content="https://res.cloudinary.com/dpz44zf0z/image/upload/v1766073096/INVIEW_ct336y.png">
+
+    <!-- Importing Google Fonts for Typography -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
     <style>
         /* --- CSS Variables for Easy Theming --- */
         :root {
@@ -473,6 +495,11 @@
             margin-bottom: 12px;
         }
 
+        .footer-col ul li a {
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+
         .footer-col ul li a:hover {
             color: var(--white);
         }
@@ -511,11 +538,13 @@
             padding: 40px;
             border-radius: 16px;
             width: 100%;
-            max-width: 450px;
+            max-width: 500px;
             box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
             transform: scale(0.9);
             transition: transform 0.3s ease;
             position: relative;
+            max-height: 90vh;
+            overflow-y: auto;
         }
 
         .modal-overlay.active .modal-container {
@@ -567,6 +596,13 @@
             transition: var(--transition);
             font-family: inherit;
         }
+        
+        /* Grid for split fields in form */
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
 
         .form-textarea {
             min-height: 100px;
@@ -589,6 +625,19 @@
             font-size: 3rem;
             color: #F59E0B; /* Amber 500 */
             margin-bottom: 20px;
+        }
+        
+        /* Text Content Modal Specifics */
+        .text-content p {
+            margin-bottom: 16px;
+            color: var(--secondary-color);
+        }
+        
+        .text-content h4 {
+            color: var(--primary-color);
+            margin-top: 24px;
+            margin-bottom: 12px;
+            font-weight: 600;
         }
 
         /* --- Responsive Design --- */
@@ -627,6 +676,10 @@
                 grid-template-columns: 1fr;
             }
             
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+            
             /* Timeline Responsive */
             .timeline::after {
                 left: 31px;
@@ -659,9 +712,8 @@
         <div class="container">
             <nav>
                 <div class="logo-container">
-                    <!-- UPDATED LOGO -->
                     <img src="https://res.cloudinary.com/dpz44zf0z/image/upload/v1766073096/INVIEW_ct336y.png" alt="Inview Logo">
-                    <span class="company-name"></span>
+                    <span class="company-name">XETA SOLUTIONS</span>
                 </div>
                 
                 <div class="nav-links" id="navLinks">
@@ -670,8 +722,7 @@
                     <a href="#portals">Portals</a>
                     <a href="#features">Features</a>
                     <a href="#about">About</a>
-                    <!-- UPDATED CONTACT BUTTON -->
-                    <button onclick="openContact()" class="btn btn-primary" style="padding: 10px 24px;">Contact Sales</button>
+                    <button onclick="openModal('contactModal')" class="btn btn-primary" style="padding: 10px 24px;">Contact Sales</button>
                 </div>
 
                 <div class="mobile-menu-btn" onclick="toggleMenu()">
@@ -861,8 +912,7 @@
         <div class="container">
             <div class="footer-grid">
                 <div class="footer-brand">
-                  <h3>Inview</h4>
-                    <h4>By Xeta Solutions</h4>
+                    <h4>Xeta Solutions</h4>
                     <p>Empowering companies with next-generation software solutions. We build the tools that build the future.</p>
                 </div>
                 <div class="footer-col">
@@ -874,11 +924,11 @@
                     </ul>
                 </div>
                 <div class="footer-col">
-                    <h5>Legal</h5>
+                    <h5>Legal & Support</h5>
                     <ul>
-                        <li><a href="#">Privacy Policy</a></li>
-                        <li><a href="#">Terms of Service</a></li>
-                        <li><a href="#">Support</a></li>
+                        <li><a onclick="openModal('privacyModal')">Privacy Policy</a></li>
+                        <li><a onclick="openModal('termsModal')">Terms of Service</a></li>
+                        <li><a onclick="openModal('supportModal')">Support</a></li>
                     </ul>
                 </div>
             </div>
@@ -888,12 +938,14 @@
         </div>
     </footer>
 
-    <!-- UPDATED: Login Modal (Under Development Notice) -->
+    <!-- MODALS -->
+
+    <!-- Login Modal (Under Development Notice) -->
     <div class="modal-overlay" id="loginModal">
         <div class="modal-container">
             <div class="modal-header">
                 <h3 class="modal-title" id="modalTitle">Login</h3>
-                <button class="close-modal" onclick="closeLogin()">&times;</button>
+                <button class="close-modal" onclick="closeAllModals()">&times;</button>
             </div>
             
             <div class="dev-modal-content">
@@ -904,29 +956,124 @@
                 <p style="color: var(--secondary-color); margin-bottom: 24px;">
                     We are working hard to get this platform ready for you. We will release the full login functionality very soon.
                 </p>
-                <button onclick="closeLogin()" class="btn btn-primary" style="width: 100%;">Okay, Got it!</button>
+                <button onclick="closeAllModals()" class="btn btn-primary" style="width: 100%;">Okay, Got it!</button>
             </div>
         </div>
     </div>
 
-    <!-- NEW: Contact Sales Modal -->
+    <!-- Contact Sales Modal (EXPANDED) -->
     <div class="modal-overlay" id="contactModal">
         <div class="modal-container">
             <div class="modal-header">
                 <h3 class="modal-title">Contact Sales</h3>
-                <button class="close-modal" onclick="closeContact()">&times;</button>
+                <button class="close-modal" onclick="closeAllModals()">&times;</button>
             </div>
             <form action="https://formspree.io/f/xyzbelvz" method="POST">
+                
                 <div class="form-group">
-                    <label class="form-label" for="contact-email">Email Address</label>
-                    <input type="email" id="contact-email" name="email" class="form-input" placeholder="name@company.com" required>
+                    <label class="form-label" for="contact-name">Full Name</label>
+                    <input type="text" id="contact-name" name="name" class="form-input" placeholder="John Doe" required>
                 </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label" for="contact-email">Email Address</label>
+                        <input type="email" id="contact-email" name="email" class="form-input" placeholder="name@company.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="contact-mobile">Mobile Number</label>
+                        <input type="tel" id="contact-mobile" name="mobile" class="form-input" placeholder="+1 (555) 000-0000" required>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label" for="contact-company">Company Name</label>
+                        <input type="text" id="contact-company" name="company" class="form-input" placeholder="Acme Corp">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="contact-designation">Designation</label>
+                        <input type="text" id="contact-designation" name="designation" class="form-input" placeholder="HR Manager">
+                    </div>
+                </div>
+
                 <div class="form-group">
                     <label class="form-label" for="contact-message">Message</label>
-                    <textarea id="contact-message" name="message" class="form-textarea" placeholder="Tell us about your hiring needs..." required></textarea>
+                    <textarea id="contact-message" name="message" class="form-textarea" placeholder="Tell us about your hiring volume and requirements..." required></textarea>
                 </div>
                 <button type="submit" class="btn btn-primary" style="width: 100%;">Send Inquiry</button>
             </form>
+        </div>
+    </div>
+
+    <!-- Privacy Policy Modal -->
+    <div class="modal-overlay" id="privacyModal">
+        <div class="modal-container">
+            <div class="modal-header">
+                <h3 class="modal-title">Privacy Policy</h3>
+                <button class="close-modal" onclick="closeAllModals()">&times;</button>
+            </div>
+            <div class="text-content">
+                <p><strong>Last Updated: October 2024</strong></p>
+                <p>At Xeta Solutions, we prioritize the privacy and security of your data. This Privacy Policy outlines how we collect, use, and protect your information when using the Inview platform.</p>
+                <h4>1. Data Collection</h4>
+                <p>We collect information necessary to provide our services, including user credentials for admins, moderators, and interviewers, as well as candidate data uploaded for assessment purposes.</p>
+                <h4>2. Data Usage</h4>
+                <p>Your data is used solely for the purpose of facilitating the recruitment process, including scheduling, grading, and report generation. We do not sell your data to third parties.</p>
+                <h4>3. Security</h4>
+                <p>We implement industry-standard security measures, including encryption and secure access protocols, to protect your data from unauthorized access.</p>
+                <button onclick="closeAllModals()" class="btn btn-outline" style="width: 100%; margin-top: 20px;">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Terms of Service Modal -->
+    <div class="modal-overlay" id="termsModal">
+        <div class="modal-container">
+            <div class="modal-header">
+                <h3 class="modal-title">Terms of Service</h3>
+                <button class="close-modal" onclick="closeAllModals()">&times;</button>
+            </div>
+            <div class="text-content">
+                <p>By accessing or using the Inview platform, you agree to be bound by these Terms of Service.</p>
+                <h4>1. Acceptable Use</h4>
+                <p>You agree to use the platform only for lawful recruitment and assessment purposes. Misuse of the coding compiler or attempt to breach system security is strictly prohibited.</p>
+                <h4>2. Account Responsibility</h4>
+                <p>You are responsible for maintaining the confidentiality of your login credentials. Any activity occurring under your account is your responsibility.</p>
+                <h4>3. Limitation of Liability</h4>
+                <p>Xeta Solutions provides this software "as is". While we strive for reliability, we are not liable for any indirect damages arising from the use of this service.</p>
+                <button onclick="closeAllModals()" class="btn btn-outline" style="width: 100%; margin-top: 20px;">I Agree</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Support Modal -->
+    <div class="modal-overlay" id="supportModal">
+        <div class="modal-container">
+            <div class="modal-header">
+                <h3 class="modal-title">Support</h3>
+                <button class="close-modal" onclick="closeAllModals()">&times;</button>
+            </div>
+            <div class="dev-modal-content">
+                <div class="portal-icon-box icon-mod" style="margin: 0 auto 20px auto;">
+                    <i class="fas fa-headset"></i>
+                </div>
+                <h4 style="color: var(--primary-color); margin-bottom: 10px;">Need Help?</h4>
+                <p style="margin-bottom: 20px;">Our support team is available Mon-Fri, 9am - 6pm IST.</p>
+                
+                <div style="text-align: left; background: #F8FAFC; padding: 20px; border-radius: 12px; margin-bottom: 20px;">
+                    <div style="margin-bottom: 10px;">
+                        <i class="fas fa-envelope" style="color: var(--accent-color); width: 20px;"></i> 
+                        <span style="font-weight: 500;">support@xetasolutions.com</span>
+                    </div>
+                    <div>
+                        <i class="fas fa-phone" style="color: var(--accent-color); width: 20px;"></i> 
+                        <span style="font-weight: 500;">+91 9010408899</span>
+                    </div>
+                </div>
+
+                <button onclick="openModal('contactModal')" class="btn btn-primary" style="width: 100%;">Open Support Ticket</button>
+            </div>
         </div>
     </div>
 
@@ -937,47 +1084,45 @@
             nav.classList.toggle('active');
         }
 
-        // --- Login Modal Logic (Under Development) ---
-        const loginModal = document.getElementById('loginModal');
+        // --- Generic Modal Logic ---
+        const allModals = ['loginModal', 'contactModal', 'privacyModal', 'termsModal', 'supportModal'];
+
+        function closeAllModals() {
+            allModals.forEach(id => {
+                const modal = document.getElementById(id);
+                if (modal) modal.classList.remove('active');
+            });
+        }
+
+        function openModal(modalId) {
+            closeAllModals(); // Close others first
+            
+            // Close mobile menu if open
+            document.getElementById('navLinks').classList.remove('active');
+            
+            const modal = document.getElementById(modalId);
+            if (modal) {
+                modal.classList.add('active');
+            }
+        }
+
+        // --- Specific Logic for Login (to set title dynamically) ---
         const modalTitle = document.getElementById('modalTitle');
 
         function openLogin(role) {
-            // Simply update the title and show the "Under Dev" message
+            closeAllModals();
             if (role) {
                 modalTitle.innerText = `${role} Login`;
             } else {
                 modalTitle.innerText = "Login";
             }
-            loginModal.classList.add('active');
-        }
-
-        function closeLogin() {
-            loginModal.classList.remove('active');
-        }
-
-        // --- Contact Modal Logic ---
-        const contactModal = document.getElementById('contactModal');
-
-        function openContact() {
-            // Close login modal if it's open (just in case)
-            closeLogin();
-            // Close mobile menu if open
-            document.getElementById('navLinks').classList.remove('active');
-            
-            contactModal.classList.add('active');
-        }
-
-        function closeContact() {
-            contactModal.classList.remove('active');
+            document.getElementById('loginModal').classList.add('active');
         }
 
         // Close modals if clicking outside content
         window.addEventListener('click', (e) => {
-            if (e.target === loginModal) {
-                closeLogin();
-            }
-            if (e.target === contactModal) {
-                closeContact();
+            if (e.target.classList.contains('modal-overlay')) {
+                closeAllModals();
             }
         });
 
